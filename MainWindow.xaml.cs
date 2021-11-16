@@ -66,7 +66,7 @@ namespace ChatApp
                 }
                 catch (SocketException ex)
                 {
-                    addData(" " + ex);
+                    addData(" " + ex.Message);
                 }
 
             }
@@ -89,7 +89,7 @@ namespace ChatApp
             }
             catch (Exception e)
             {
-                addData("Connection Lost");
+                addData("Connection Lost: " + e.Message);
                 return;
             }
 

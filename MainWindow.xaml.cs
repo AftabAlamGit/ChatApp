@@ -81,65 +81,37 @@ namespace ChatApp
         }
         private void DataRecieved(IAsyncResult ar)
         {
+            bool part1 = tcpClient.Client.Poll(1000, SelectMode.SelectRead);
+            bool part2 = (tcpClient.Client.Available == 0);
+            
+            if (part1 && part2)
+            {
+                netStream.Close();
+                addData("Server Disconnected");
+                return;
+            }
+
             try
             {
                 // Call EndRead.
                 int bytesRead = netStream.EndRead(ar);
-
             }
             catch (Exception e)
             {
-                addData("Connection Lost: " + e.Message);
-                return;
+                addData("Connection Lost");
             }
+            // Process the bytes here.
+            String data = null;
+            data = System.Text.Encoding.ASCII.GetString(bytes);
+            // Console.WriteLine("Received: {0}", data);
+            addData(data);
 
-            bool blockingState = tcpClient.Client.Blocking;
-            try
-            {
-                byte[] tmp = new byte[1];
-
-                tcpClient.Client.Blocking = false;
-                tcpClient.Client.Send(tmp, 0, 0);
-                Console.WriteLine("Connected!");
-                // Process the bytes here.
-                string data = null;
-                data = System.Text.Encoding.ASCII.GetString(bytes);
-                // Console.WriteLine("Received: {0}", data);
-                addData(data);
-                // Read again.  This callback will be called again.
-                //lock (_lock)
-                //{
-                //    if (!tcpClient.Client.Connected || !tcpClient.Connected)
-                //    {
-
-                //        netStream.Close();
-                //        addData("Server Disconnected");
-                //        return;
-                //    }
-                //}
-                netStream.BeginRead(bytes, 0, bytes.Length, DataRecieved, null);
-            }
-            catch (SocketException e)
-            {
-                if (e.NativeErrorCode.Equals(10035))
-                {
-                    Console.WriteLine("Still Connected, but the Send would block");
-                }
-                else
-                {
-                    Console.WriteLine("Disconnected: error code {0}!", e.NativeErrorCode);
-                }
-                // 10035 == WSAEWOULDBLOCK
-                netStream.Close();
-                addData("Server Disconnected");
-                return;
-              
-            }
+            // Determine if you want to read again.  If not, return.
 
 
+            // Read again.  This callback will be called again.
+            netStream.BeginRead(bytes, 0, bytes.Length, DataRecieved, null);
 
-
-            
         }
 
         private void getMessageAsync()

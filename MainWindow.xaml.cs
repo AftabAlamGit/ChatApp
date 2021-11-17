@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace ChatApp
 {
@@ -37,7 +39,12 @@ namespace ChatApp
         private bool isConnect;
 
         private Byte[] bytes;
-        public object _lock = new object();
+
+        List<Contact> contactsList = new List<Contact>();
+
+        public DataSet contactsDataSet;
+
+        DataAccess db;
         public MainWindow()
         {
             InitializeComponent();
@@ -255,6 +262,36 @@ namespace ChatApp
             catch (Exception e)
             {
                 addData("Connection Lost");
+            }
+        }
+
+        private void ContactTabClicked(object sender, RoutedEventArgs e)
+        {
+            db = DataAccess.GetObj();
+            contactsDataSet = new DataSet();
+            contactsDataSet = db.GetContacts("LoadDataBinding");
+            //if (db.GetContacts())
+            //{
+                //db.adapter.Fill(contactsDataSet);
+                ContactsDataGrid.DataContext = contactsDataSet;
+            //}
+        }
+
+        private void AddContactClick(object sender, RoutedEventArgs e)
+        {
+            var fName = textBoxFirstName.Text;
+            var lName = textBoxLastName.Text;
+            var ip = textBoxIPAddress.Text;
+            var port = textBoxPort.Text;
+
+            var result = db.InsertContact(fName, lName, ip, port);
+            if (result)
+            {
+                MessageBox.Show("Contact Added");
+            }
+            else
+            {
+                MessageBox.Show("CanNot add data");
             }
         }
     }

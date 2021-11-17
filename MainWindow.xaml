@@ -143,8 +143,70 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Contacts">
-                
+            <TabItem Header="Contacts"
+                     Selector.Selected="ContactTabClicked">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"
+                                          MinWidth="200"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid Grid.Column="0"
+                              Name="ContactsDataGrid"
+                              IsReadOnly="False"
+                              ItemsSource="{Binding
+                                            Path=LoadDataBinding,
+                                            Mode=TwoWay,
+                                            UpdateSourceTrigger=PropertyChanged}">
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn Header="Select" Binding="{Binding OnlineOrderFlag}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Grid.Column="1"
+                                Orientation="Vertical"
+                                Grid.IsSharedSizeScope="True"
+                                Margin="10">
+                        <Grid Margin="0 0 0 5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0">First Name</Label>
+                            <TextBox Grid.Column="1"
+                                     Name="textBoxFirstName"/>
+                        </Grid>
+                        <Grid Margin="0 0 0 5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0">Last Name</Label>
+                            <TextBox Grid.Column="1"
+                                     Name="textBoxLastName"/>
+                        </Grid>
+                        <Grid Margin="0 0 0 5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0">IP Address</Label>
+                            <TextBox Grid.Column="1"
+                                     Name="textBoxIPAddress"/>
+                        </Grid>
+                        <Grid Margin="0 0 0 5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0">Port</Label>
+                            <TextBox Grid.Column="1"
+                                     Name="textBoxPort"/>
+                        </Grid>
+                        <Button Width="100"
+                                Content="Add contact"
+                                Click="AddContactClick"/>
+                    </StackPanel>
+                </Grid>
             </TabItem>
             
         </TabControl>

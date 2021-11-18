@@ -153,13 +153,31 @@
                     </Grid.ColumnDefinitions>
                     <DataGrid Grid.Column="0"
                               Name="ContactsDataGrid"
-                              IsReadOnly="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="False"
                               ItemsSource="{Binding
                                             Path=LoadDataBinding,
                                             Mode=TwoWay,
-                                            UpdateSourceTrigger=PropertyChanged}">
+                                            UpdateSourceTrigger=PropertyChanged}"
+                              SelectionChanged="rowClick">
+                        <!--<DataGrid.Resources>
+                            <Style TargetType="DataGridRow">
+                                <EventSetter Event="Selection" Handler="Row_DoubleClick"/>
+                            </Style>
+                        </DataGrid.Resources>-->
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Header="Select" Binding="{Binding OnlineOrderFlag}" />
+                            <DataGridCheckBoxColumn Binding="{Binding IsSelected}">
+                                <DataGridCheckBoxColumn.Header>
+                                    <CheckBox Name="chkSelectAll" Checked="chkSelectAll_Checked" Unchecked="chkSelectAll_Unchecked"></CheckBox>
+                                </DataGridCheckBoxColumn.Header>
+                            </DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Select" IsThreeState="True" />
+                            <DataGridTextColumn Header="ID" Binding="{Binding Path=id}" />
+                            <DataGridTextColumn Header="First Name" Binding="{Binding Path=first_name}" />
+                            <DataGridTextColumn Header="Last Name" Binding="{Binding Path=last_name}" />
+                            <DataGridTextColumn Header="IP Address" Binding="{Binding Path=ip}" />
+                            <DataGridTextColumn Header="Port" Binding="{Binding Path=port}" />
                         </DataGrid.Columns>
                     </DataGrid>
                     <StackPanel Grid.Column="1"

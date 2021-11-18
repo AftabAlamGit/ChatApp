@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DataGrid = System.Windows.Controls.DataGrid;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace ChatApp
@@ -291,7 +292,34 @@ namespace ChatApp
             }
             else
             {
-                MessageBox.Show("CanNot add data");
+                MessageBox.Show("Cannot add data");
+            }
+        }
+
+        private void chkSelectAll_Checked(object sender, RoutedEventArgs e)
+        {
+            foreach (Contact c in ContactsDataGrid.ItemsSource)
+            {
+                c.IsSelected = true;
+            }
+        }
+
+        private void chkSelectAll_Unchecked(object sender, RoutedEventArgs e)
+        {
+            foreach (Contact c in ContactsDataGrid.ItemsSource)
+            {
+                c.IsSelected = false;
+            }
+        }
+
+        private void rowClick(object sender, SelectionChangedEventArgs e)
+        {
+            DataGrid gd = (DataGrid)sender;
+            DataRowView rowSelected = gd.SelectedItem as DataRowView;
+            if(rowSelected != null)
+            {
+                textBoxRemoteIP.Text = rowSelected["ip"].ToString();
+                textBoxRemotePort.Text = rowSelected["port"].ToString();
             }
         }
     }

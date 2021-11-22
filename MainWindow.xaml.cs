@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CheckBox = System.Windows.Controls.CheckBox;
 using DataGrid = System.Windows.Controls.DataGrid;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -298,17 +299,39 @@ namespace ChatApp
 
         private void chkSelectAll_Checked(object sender, RoutedEventArgs e)
         {
-            foreach (Contact c in ContactsDataGrid.ItemsSource)
+            var chkSelectAll = sender as CheckBox;
+            var firstCol = ContactsDataGrid.Columns.OfType<DataGridCheckBoxColumn>().FirstOrDefault(c => c.DisplayIndex == 0);
+            if (chkSelectAll == null || firstCol == null || ContactsDataGrid?.Items == null)
             {
-                c.IsSelected = true;
+                return;
+            }
+            foreach (var item in ContactsDataGrid.Items)
+            {
+                var chBx = firstCol.GetCellContent(item) as CheckBox;
+                if (chBx == null)
+                {
+                    continue;
+                }
+                chBx.IsChecked = chkSelectAll.IsChecked;
             }
         }
 
         private void chkSelectAll_Unchecked(object sender, RoutedEventArgs e)
         {
-            foreach (Contact c in ContactsDataGrid.ItemsSource)
+            var chkSelectAll = sender as CheckBox;
+            var firstCol = ContactsDataGrid.Columns.OfType<DataGridCheckBoxColumn>().FirstOrDefault(c => c.DisplayIndex == 0);
+            if (chkSelectAll == null || firstCol == null || ContactsDataGrid?.Items == null)
             {
-                c.IsSelected = false;
+                return;
+            }
+            foreach (var item in ContactsDataGrid.Items)
+            {
+                var chBx = firstCol.GetCellContent(item) as CheckBox;
+                if (chBx == null)
+                {
+                    continue;
+                }
+                chBx.IsChecked = chkSelectAll.IsChecked;
             }
         }
 

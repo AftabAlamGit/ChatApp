@@ -161,18 +161,12 @@
                                             Mode=TwoWay,
                                             UpdateSourceTrigger=PropertyChanged}"
                               SelectionChanged="rowClick">
-                        <!--<DataGrid.Resources>
-                            <Style TargetType="DataGridRow">
-                                <EventSetter Event="Selection" Handler="Row_DoubleClick"/>
-                            </Style>
-                        </DataGrid.Resources>-->
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn Binding="{Binding IsSelected}">
                                 <DataGridCheckBoxColumn.Header>
                                     <CheckBox Name="chkSelectAll" Checked="chkSelectAll_Checked" Unchecked="chkSelectAll_Unchecked"></CheckBox>
                                 </DataGridCheckBoxColumn.Header>
                             </DataGridCheckBoxColumn>
-                            <DataGridCheckBoxColumn Header="Select" IsThreeState="True" />
                             <DataGridTextColumn Header="ID" Binding="{Binding Path=id}" />
                             <DataGridTextColumn Header="First Name" Binding="{Binding Path=first_name}" />
                             <DataGridTextColumn Header="Last Name" Binding="{Binding Path=last_name}" />
